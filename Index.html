@@ -1,480 +1,690 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>SHAIKH-UL-AALAM R.A.</title>
-    <meta name="description" content="Shaikh-ul-Aalam R.A. Shruks Collection" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHAIKH-UL-AALAM R.A. - Shruks</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #311b92;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --border-color: #dee2e6;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            background: #f5f5f5;
-            color: #333;
+            background-color: var(--light-bg);
         }
 
         /* Header Styles */
-        .header {
-            background: #1a237e;
+        .site-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
-            padding: 2rem;
-            text-align: center;
-        }
-
-        .logo-title {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .book-icon {
-            font-size: 2.5rem;
-            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
         }
 
         .site-title {
             font-size: 2.5rem;
             font-weight: 300;
-            color: white;
-            text-decoration: none;
         }
 
-        /* Navigation */
-        .nav {
+        /* Search Panel Styles */
+        .search-panel {
             background: white;
-            padding: 1rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .nav-list {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        /* Search Section */
-        .search-section {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .search-title {
-            text-align: center;
-            color: #1a237e;
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-        }
-
-        .search-form {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .search-label {
-            font-weight: 500;
-        }
-
-        .search-input {
-            padding: 0.5rem 1rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-
-        .search-button {
-            padding: 0.5rem 1.5rem;
-            background: #1a237e;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .search-warning {
-            color: #d32f2f;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-            text-align: center;
-        }
-
-        /* Content Table */
-        .content-table {
-            max-width: 1200px;
-            margin: 2rem auto;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .table th {
-            background: #1a237e;
-            color: white;
-            padding: 1rem;
-            text-align: center;
-            font-weight: 500;
-        }
-
-        .table td {
+            border-radius: 1rem;
             padding: 1.5rem;
-            border: 1px solid #eee;
-            vertical-align: top;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
         }
 
-        .shruk-number {
-            font-size: 1.5rem;
-            color: #1a237e;
-            text-align: center;
+        .nav-tabs .nav-link {
+            color: var(--text-color);
+            border: none;
+            padding: 1rem 1.5rem;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            font-weight: 500;
+        }
+
+        .tab-content {
+            padding: 1.5rem 0;
+        }
+
+        /* Shruk Content Styles */
+        .shruk-container {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .poetry-card {
+            position: relative;
+            background: var(--light-bg);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
         }
 
         .poetry-text {
-            white-space: pre-line;
-            line-height: 1.8;
             font-family: 'Times New Roman', serif;
+            line-height: 2;
+            white-space: pre-line;
+            position: relative;
+            padding: 1rem;
+        }
+
+        .poetry-text::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: -10px;
+            font-size: 4rem;
+            color: var(--primary-color);
+            opacity: 0.1;
         }
 
         .kashmiri-text {
             direction: rtl;
             text-align: right;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
         }
 
-        /* Navigation Buttons */
-        .nav-buttons {
+        /* Audio Player Styles */
+        .audio-control {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            z-index: 2;
+        }
+
+        .audio-btn {
+            background: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .audio-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .audio-btn i {
+            color: var(--primary-color);
+        }
+
+        /* Navigation Controls */
+        .nav-controls {
             display: flex;
             justify-content: center;
             gap: 1rem;
-            margin: 2rem auto;
-            max-width: 1200px;
+            margin: 2rem 0;
         }
 
-        .nav-button {
+        .nav-btn {
             padding: 0.5rem 1.5rem;
-            background: #1a237e;
-            color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 0.5rem;
+            background: var(--primary-color);
+            color: white;
             cursor: pointer;
-            font-size: 1rem;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .nav-button:disabled {
+        .nav-btn:disabled {
             background: #9e9e9e;
             cursor: not-allowed;
         }
 
-        /* Footer */
-        .footer {
-            background: #1a237e;
-            color: white;
-            padding: 2rem;
-            text-align: center;
-            margin-top: 2rem;
-        }
-
-        .footer-nav {
-            list-style: none;
-            display: flex;
+        /* Loading States */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.8);
+            display: none;
             justify-content: center;
-            gap: 2rem;
-            margin-bottom: 1rem;
+            align-items: center;
+            z-index: 1000;
         }
 
-        .footer-link {
-            color: white;
-            text-decoration: none;
-            opacity: 0.8;
+        .loading-spinner {
+            color: var(--primary-color);
         }
 
-        .footer-link:hover {
-            opacity: 1;
-        }
-
-        /* Loading State */
-        .loading {
-            text-align: center;
-            padding: 2rem;
+        /* Error Messages */
+        .error-alert {
             display: none;
+            margin: 1rem 0;
         }
 
-        .loading i {
-            font-size: 2rem;
-            color: #1a237e;
-        }
-
-        /* Error Message */
-        .error-message {
-            text-align: center;
-            color: #d32f2f;
-            padding: 1rem;
-            display: none;
-        }
-
-        /* Responsive Design */
+        /* Responsive Adjustments */
         @media (max-width: 768px) {
-            .search-form {
-                flex-direction: column;
-            }
-            
-            .nav-list {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .table td, .table th {
-                padding: 1rem 0.5rem;
-            }
-            
             .site-title {
                 font-size: 2rem;
+            }
+
+            .poetry-card {
+                padding: 1rem;
+            }
+
+            .nav-tabs .nav-link {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
             }
         }
     </style>
 </head>
 <body>
     <!-- Header -->
-    <header class="header">
-        <div class="logo-title">
-            <i class="fas fa-book-open book-icon"></i>
-            <a href="index.html" class="site-title">SHAIKH-UL-AALAM R.A.</a>
+    <header class="site-header">
+        <div class="container text-center">
+            <i class="fas fa-book-open mb-3" style="font-size: 3rem;"></i>
+            <h1 class="site-title">SHAIKH-UL-AALAM R.A.</h1>
+            <nav class="mt-4">
+                <ul class="nav justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="index.html">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="shruks.html">
+                            <i class="fas fa-scroll"></i> Shruks
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </header>
 
-    <!-- Navigation -->
-    <nav class="nav">
-        <ul class="nav-list">
-            <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="#" class="nav-link" id="refreshButton"><i class="fas fa-scroll"></i> Shruks</a></li>
-        </ul>
-    </nav>
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Search Panel -->
+        <div class="search-panel">
+            <ul class="nav nav-tabs" id="searchTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="number-tab" data-bs-toggle="tab" 
+                            data-bs-target="#number-search" type="button" role="tab">
+                        <i class="fas fa-hashtag"></i> By Number
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="text-tab" data-bs-toggle="tab" 
+                            data-bs-target="#text-search" type="button" role="tab">
+                        <i class="fas fa-search"></i> By Text
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="category-tab" data-bs-toggle="tab" 
+                            data-bs-target="#category-search" type="button" role="tab">
+                        <i class="fas fa-tags"></i> By Category
+                    </button>
+                </li>
+            </ul>
 
-    <!-- Search Section -->
-    <div class="search-section">
-        <h2 class="search-title"><i class="fas fa-search"></i> Search Shruk</h2>
-        <form id="searchForm" class="search-form">
-            <label for="searchTerm" class="search-label">Shruk Number:</label>
-            <input type="text" id="searchTerm" class="search-input" placeholder="Enter number (1-99)">
-            <button type="submit" class="search-button">Search</button>
-        </form>
-        <p class="search-warning"><i class="fas fa-info-circle"></i> Please enter numbers from 1 to 99 only</p>
-    </div>
+            <div class="tab-content" id="searchTabsContent">
+                <!-- Number Search -->
+                <div class="tab-pane fade show active" id="number-search" role="tabpanel">
+                    <form id="numberSearchForm">
+                        <div class="row g-3">
+                            <div class="col-md-9">
+                                <input type="number" class="form-control" id="shrukNumber" 
+                                       min="1" max="99" placeholder="Enter Shruk number (1-99)">
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-search"></i> Search
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
 
-    <!-- Navigation Buttons -->
-    <div class="nav-buttons">
-        <button id="prevButton" class="nav-button" disabled>
-            <i class="fas fa-chevron-left"></i> Previous
-        </button>
-        <button id="nextButton" class="nav-button">
-            Next <i class="fas fa-chevron-right"></i>
-        </button>
-    </div>
+                <!-- Text Search -->
+                <div class="tab-pane fade" id="text-search" role="tabpanel">
+                    <form id="textSearchForm">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <select class="form-select" id="searchLanguage">
+                                    <option value="kashmiri">Kashmiri</option>
+                                    <option value="english">English</option>
+                                    <option value="french">French</option>
+                                    <option value="german">German</option>
+                                    <option value="russian">Russian</option>
+                                </select>
+                            </div>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="searchText" 
+                                       placeholder="Enter text to search">
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-search"></i> Search
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
 
-    <!-- Loading Indicator -->
-    <div class="loading">
-        <i class="fas fa-spinner fa-spin"></i>
-    </div>
+                <!-- Category Search -->
+                <div class="tab-pane fade" id="category-search" role="tabpanel">
+                    <form id="categorySearchForm">
+                        <div class="row g-3">
+                            <div class="col-md-9">
+                                <select class="form-select" id="categorySelect">
+                                    <option value="">Select Category</option>
+                                    <!-- Categories will be loaded dynamically -->
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-search"></i> Search
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-    <!-- Error Message -->
-    <div class="error-message"></div>
+        <!-- Error Alert -->
+        <div class="alert alert-danger error-alert" role="alert">
+            <i class="fas fa-exclamation-circle"></i>
+            <span class="error-message"></span>
+        </div>
 
-    <!-- Content Table -->
-    <div class="content-table">
-        <table class="table" id="shrukContent">
+        <!-- Navigation Controls -->
+        <div class="nav-controls">
+            <button id="prevButton" class="nav-btn" disabled>
+                <i class="fas fa-chevron-left"></i> Previous
+            </button>
+            <button id="nextButton" class="nav-btn">
+                Next <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <!-- Shruk Content -->
+        <div id="shrukContainer" class="shruk-container">
             <!-- Content will be loaded dynamically -->
-        </table>
+        </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <ul class="footer-nav">
-            <li><a href="index.html" class="footer-link"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="#" class="footer-link"><i class="fas fa-envelope"></i> Contact</a></li>
-        </ul>
-        <p>Copyright © 2024 | All rights reserved</p>
-    </footer>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay">
+        <div class="spinner-border loading-spinner" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
 
-    <script>
-    // Configuration
-    const config = {
-        owner: 'HAQ-NAWAZ-MALIK',
-        repo: 'shruk-website',
-        branch: 'main'
-    };
+    <!-- Hidden Audio Player -->
+    <audio id="audioPlayer" style="display: none;"></audio>
 
-    let currentShrukNumber = 1;
 
-    // Function to fetch Shruk content from GitHub
-    async function fetchShruk(number) {
-        const loading = document.querySelector('.loading');
-        const errorMsg = document.querySelector('.error-message');
-        loading.style.display = 'block';
-        errorMsg.style.display = 'none';
 
-        try {
-            const response = await fetch(`https://raw.githubusercontent.com/${config.owner}/${config.repo}/${config.branch}/shruks/shruk${number}.txt`);
-            
-            if (!response.ok) {
-                throw new Error(`Shruk ${number} not found`);
-            }
+// Add this script section just before the closing body tag
+<script>
+// Configuration and State Management
+const config = {
+    owner: 'YOUR_GITHUB_USERNAME',
+    repo: 'YOUR_REPO_NAME',
+    branch: 'main'
+};
 
-            const content = await response.text();
-            const shrukData = parseShrukContent(content);
-            
-            updateUI(shrukData, number);
-            updateNavigationButtons(number);
-        } catch (error) {
-            errorMsg.textContent = error.message;
-            errorMsg.style.display = 'block';
-        } finally {
-            loading.style.display = 'none';
+let currentShrukNumber = 1;
+let searchResults = [];
+let searchIndex = 0;
+let audioPlaying = false;
+
+// Cache DOM elements
+const elements = {
+    shrukContainer: document.getElementById('shrukContainer'),
+    loadingOverlay: document.querySelector('.loading-overlay'),
+    errorAlert: document.querySelector('.error-alert'),
+    errorMessage: document.querySelector('.error-message'),
+    prevButton: document.getElementById('prevButton'),
+    nextButton: document.getElementById('nextButton'),
+    audioPlayer: document.getElementById('audioPlayer'),
+    numberSearchForm: document.getElementById('numberSearchForm'),
+    textSearchForm: document.getElementById('textSearchForm'),
+    categorySearchForm: document.getElementById('categorySearchForm')
+};
+
+// Initialize search index for text search
+let searchableContent = [];
+
+// Helper Functions
+function showLoading() {
+    elements.loadingOverlay.style.display = 'flex';
+}
+
+function hideLoading() {
+    elements.loadingOverlay.style.display = 'none';
+}
+
+function showError(message) {
+    elements.errorAlert.style.display = 'block';
+    elements.errorMessage.textContent = message;
+}
+
+function hideError() {
+    elements.errorAlert.style.display = 'none';
+}
+
+// Fetch and Parse Functions
+async function fetchShrukContent(number) {
+    const response = await fetch(
+        `https://raw.githubusercontent.com/${config.owner}/${config.repo}/${config.branch}/shruks/text/shruk${number}.txt`
+    );
+    
+    if (!response.ok) {
+        throw new Error(`Failed to load Shruk ${number}`);
+    }
+    
+    return await response.text();
+}
+
+function parseShrukContent(content) {
+    const sections = {};
+    let currentSection = '';
+    const lines = content.split('\n');
+    
+    for (const line of lines) {
+        if (line.startsWith('[') && line.endsWith(']')) {
+            currentSection = line.slice(1, -1).toLowerCase();
+            sections[currentSection] = '';
+        } else if (currentSection) {
+            sections[currentSection] += (sections[currentSection] ? '\n' : '') + line;
         }
     }
+    
+    return sections;
+}
 
-    // Function to parse Shruk content
-    function parseShrukContent(content) {
-        const lines = content.split('\n');
-        return {
-            number: currentShrukNumber,
-            kashmiri: lines[0] || '',
-            english: lines[1] || '',
-            french: lines[2] || '',
-            german: lines[3] || '',
-            russian: lines[4] || ''
-        };
+// Audio Functions
+async function loadAudio(number) {
+    try {
+        const audioUrl = `https://raw.githubusercontent.com/${config.owner}/${config.repo}/${config.branch}/shruks/audio/Shruk_${number}_audio.wav`;
+        elements.audioPlayer.src = audioUrl;
+        await elements.audioPlayer.load();
+        return true;
+    } catch (error) {
+        console.error('Error loading audio:', error);
+        return false;
     }
+}
 
-    // Function to update UI with Shruk content
-    function updateUI(shrukData, number) {
-        const table = document.getElementById('shrukContent');
-        table.innerHTML = `
-            <tr>
-                <th>Shrukh</th>
-                <th>Kashmiri</th>
-                <th>English</th>
-            </tr>
-            <tr>
-                <td class="shruk-number">${number}</td>
-                <td>
+function toggleAudio(number) {
+    if (audioPlaying) {
+        elements.audioPlayer.pause();
+        audioPlaying = false;
+        document.querySelector(`.audio-btn[data-shruk="${number}"] i`)
+            .classList.replace('fa-pause', 'fa-play');
+    } else {
+        elements.audioPlayer.play();
+        audioPlaying = true;
+        document.querySelector(`.audio-btn[data-shruk="${number}"] i`)
+            .classList.replace('fa-play', 'fa-pause');
+    }
+}
+
+// UI Update Functions
+function updateNavigationButtons(number) {
+    elements.prevButton.disabled = number <= 1;
+    elements.nextButton.disabled = number >= 99;
+}
+
+function createShrukHTML(data, number) {
+    return `
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center mb-4">Shruk ${number}</h2>
+            </div>
+            
+            <!-- Kashmiri Text -->
+            <div class="col-12 mb-4">
+                <div class="poetry-card">
+                    <div class="audio-control">
+                        <button class="audio-btn" data-shruk="${number}" onclick="toggleAudio(${number})">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
                     <div class="poetry-text kashmiri-text">
-                        ${shrukData.kashmiri}
+                        ${data.kashmiri}
                     </div>
-                </td>
-                <td>
+                </div>
+            </div>
+            
+            <!-- English Translation -->
+            <div class="col-12 mb-4">
+                <div class="poetry-card">
+                    <h4 class="mb-3">English</h4>
                     <div class="poetry-text">
-                        ${shrukData.english}
+                        ${data.english}
                     </div>
-                </td>
-            </tr>
-            <tr>
-                <th>French</th>
-                <th>German</th>
-                <th>Russian</th>
-            </tr>
-            <tr>
-                <td>
+                </div>
+            </div>
+            
+            <!-- Other Translations -->
+            <div class="col-md-4">
+                <div class="poetry-card">
+                    <h4 class="mb-3">French</h4>
                     <div class="poetry-text">
-                        ${shrukData.french}
+                        ${data.french}
                     </div>
-                </td>
-                <td>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="poetry-card">
+                    <h4 class="mb-3">German</h4>
                     <div class="poetry-text">
-                        ${shrukData.german}
+                        ${data.german}
                     </div>
-                </td>
-                <td>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="poetry-card">
+                    <h4 class="mb-3">Russian</h4>
                     <div class="poetry-text">
-                        ${shrukData.russian}
+                        ${data.russian}
                     </div>
-                </td>
-            </tr>
-        `;
-    }
+                </div>
+            </div>
+            
+            <!-- Metadata -->
+            <div class="col-12 mt-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Category: ${data.metadata?.category || 'N/A'}</h5>
+                        <p class="mb-0">Tags: ${data.metadata?.tags || 'N/A'}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
 
-    // Function to update navigation buttons
-    function updateNavigationButtons(number) {
-        const prevButton = document.getElementById('prevButton');
-        const nextButton = document.getElementById('nextButton');
+// Main Functions
+async function loadShruk(number) {
+    showLoading();
+    hideError();
+    
+    try {
+        const content = await fetchShrukContent(number);
+        const data = parseShrukContent(content);
         
-        prevButton.disabled = number <= 1;
-        nextButton.disabled = number >= 99;
-    }
-
-    // Event Listeners
-    document.getElementById('searchForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const searchTerm = document.getElementById('searchTerm').value;
-        const number = parseInt(searchTerm);
+        elements.shrukContainer.innerHTML = createShrukHTML(data, number);
+        currentShrukNumber = number;
+        updateNavigationButtons(number);
         
-        if (number >= 1 && number <= 99) {
-            currentShrukNumber = number;
-            fetchShruk(number);
+        // Load audio if available
+        const hasAudio = await loadAudio(number);
+        if (!hasAudio) {
+            document.querySelector(`.audio-btn[data-shruk="${number}"]`).style.display = 'none';
         }
-    });
+        
+        // Update URL without reloading
+        const newUrl = `${window.location.pathname}?shruk=${number}`;
+        window.history.pushState({ shrukNumber: number }, '', newUrl);
+        
+    } catch (error) {
+        showError(error.message);
+    } finally {
+        hideLoading();
+    }
+}
 
-    document.getElementById('prevButton').addEventListener('click', () => {
-        if (currentShrukNumber > 1) {
-            currentShrukNumber--;
-            fetchShruk(currentShrukNumber);
+// Search Functions
+async function buildSearchIndex() {
+    showLoading();
+    
+    try {
+        searchableContent = [];
+        for (let i = 1; i <= 99; i++) {
+            try {
+                const content = await fetchShrukContent(i);
+                const data = parseShrukContent(content);
+                searchableContent.push({
+                    number: i,
+                    data: data
+                });
+            } catch (error) {
+                console.warn(`Could not index Shruk ${i}:`, error);
+            }
         }
-    });
+    } catch (error) {
+        showError('Error building search index');
+    } finally {
+        hideLoading();
+    }
+}
 
-    document.getElementById('nextButton').addEventListener('click', () => {
-        if (currentShrukNumber < 99) {
-            currentShrukNumber++;
-            fetchShruk(currentShrukNumber);
-        }
+function searchShruks(query, language) {
+    if (!query) return [];
+    
+    query = query.toLowerCase();
+    return searchableContent.filter(item => {
+        const content = item.data[language]?.toLowerCase() || '';
+        return content.includes(query);
     });
+}
 
-    document.getElementById('refreshButton').addEventListener('click', (e) => {
-        e.preventDefault();
-        fetchShruk(currentShrukNumber);
-    });
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+    // Get initial Shruk number from URL
+    const params = new URLSearchParams(window.location.search);
+    const initialShruk = parseInt(params.get('shruk')) || 1;
+    
+    // Load initial Shruk
+    loadShruk(initialShruk);
+    
+    // Build search index
+    buildSearchIndex();
+});
 
-    // Initial load
-    fetchShruk(currentShrukNumber);
-    </script>
+// Navigation Events
+elements.prevButton.addEventListener('click', () => {
+    if (currentShrukNumber > 1) {
+        loadShruk(currentShrukNumber - 1);
+    }
+});
+
+elements.nextButton.addEventListener('click', () => {
+    if (currentShrukNumber < 99) {
+        loadShruk(currentShrukNumber + 1);
+    }
+});
+
+// Search Form Events
+elements.numberSearchForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const number = parseInt(document.getElementById('shrukNumber').value);
+    if (number >= 1 && number <= 99) {
+        loadShruk(number);
+    }
+});
+
+elements.textSearchForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const query = document.getElementById('searchText').value;
+    const language = document.getElementById('searchLanguage').value;
+    
+    searchResults = searchShruks(query, language);
+    if (searchResults.length > 0) {
+        searchIndex = 0;
+        loadShruk(searchResults[0].number);
+    } else {
+        showError('No matching Shruks found');
+    }
+});
+
+elements.categorySearchForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const category = document.getElementById('categorySelect').value;
+    
+    const results = searchableContent.filter(item => 
+        item.data.metadata?.category?.toLowerCase() === category.toLowerCase()
+    );
+    
+    if (results.length > 0) {
+        searchResults = results;
+        searchIndex = 0;
+        loadShruk(results[0].number);
+    } else {
+        showError('No Shruks found in this category');
+    }
+});
+
+// Audio Events
+elements.audioPlayer.addEventListener('ended', () => {
+    audioPlaying = false;
+    document.querySelector(`.audio-btn[data-shruk="${currentShrukNumber}"] i`)
+        .classList.replace('fa-pause', 'fa-play');
+});
+
+// Handle browser back/forward buttons
+window.addEventListener('popstate', (event) => {
+    if (event.state?.shrukNumber) {
+        loadShruk(event.state.shrukNumber);
+    }
+});
+</script>
+
+
+
+    
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
-
-
-
-
-
 
 
 
