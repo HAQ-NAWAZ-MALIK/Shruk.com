@@ -1,0 +1,30 @@
+SHRUK_NUMBER=2
+AUDIO_FILE=Shruk_2_audio.wav
+CATEGORY=Divine Love
+TAGS=eternal, Love, Spirit, Grace, Favor
+[KASHMIRI]
+ستھ چھم چٲنی پتھ چھُم کانٛہہ نے
+کرتام بٔدرٮ۪م دِیہہ تہٕ دۄدرٮ۪م داتھ
+ژٕ یس دِکھ تس نِتھ ہیٚکہِ کُنٛہہ نے
+کیٛاہ کرٮ۪س گٔر تہٕ کیٛاہ کرٮ۪س ساتھ
+[ENGLISH]
+You are my anchor-none else is.
+This flesh one day will rot, and this fame moulder.
+Who can snatch your favours from him.
+To whom You grant them, time opportune or not.
+[FRENCH]
+Tue s mon point d’ancrage-Personne
+d’autre ne l’est Cette chair Pourriraun
+JouretCette Charpente Pourrira Qui
+peutarrachervosfaveurá celui á qui vous
+les accordezLe moment apportunounon
+[GERMAN]
+Du bist mein Anker, kein anderer ist es.
+Dieses Fleisch wird eines Tages verrotten und dieses Gestell verformen.
+Wer kann jemandem deine Gunst entreißen.
+Dem du sie gewährst, ob die Zeit passt oder nicht
+[RUSSIAN]
+Ты мой якорь, и никто другой.
+Эта плоть один день сгниет, и этот каркас сгниет.
+Кто может отобрать у него милость Кому Ты их даруешь,
+в удобное время или нет
