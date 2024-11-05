@@ -346,345 +346,277 @@
     <!-- Hidden Audio Player -->
     <audio id="audioPlayer" style="display: none;"></audio>
 
+    <script>
+        // Configuration and State Management
+        const config = {
+            owner: 'HAQ-NAWAZ-MALIK',
+            repo: 'shruk-website',
+            branch: 'main'
+        };
 
+        let currentShrukNumber = 1;
+        let searchResults = [];
+        let searchIndex = 0;
+        let audioPlaying = false;
 
-// Add this script section just before the closing body tag
-<script>
-// Configuration and State Management
-const config = {
-    owner: 'HAQ-NAWAZ-MALIK',
-    repo: 'shruk-website',
-    branch: 'main'
-};
+        // Cache DOM elements
+        const elements = {
+            shrukContainer: document.getElementById('shrukContainer'),
+            loadingOverlay: document.querySelector('.loading-overlay'),
+            errorAlert: document.querySelector('.error-alert'),
+            errorMessage: document.querySelector('.error-message'),
+            prevButton: document.getElementById('prevButton'),
+            nextButton: document.getElementById('nextButton'),
+            audioPlayer: document.getElementById('audioPlayer'),
+            numberSearchForm: document.getElementById('numberSearchForm'),
+            textSearchForm: document.getElementById('textSearchForm'),
+            categorySearchForm: document.getElementById('categorySearchForm')
+        };
 
-let currentShrukNumber = 1;
-let searchResults = [];
-let searchIndex = 0;
-let audioPlaying = false;
+        // Initialize search index for text search
+        let searchableContent = [];
 
-// Cache DOM elements
-const elements = {
-    shrukContainer: document.getElementById('shrukContainer'),
-    loadingOverlay: document.querySelector('.loading-overlay'),
-    errorAlert: document.querySelector('.error-alert'),
-    errorMessage: document.querySelector('.error-message'),
-    prevButton: document.getElementById('prevButton'),
-    nextButton: document.getElementById('nextButton'),
-    audioPlayer: document.getElementById('audioPlayer'),
-    numberSearchForm: document.getElementById('numberSearchForm'),
-    textSearchForm: document.getElementById('textSearchForm'),
-    categorySearchForm: document.getElementById('categorySearchForm')
-};
-
-// Initialize search index for text search
-let searchableContent = [];
-
-// Helper Functions
-function showLoading() {
-    elements.loadingOverlay.style.display = 'flex';
-}
-
-function hideLoading() {
-    elements.loadingOverlay.style.display = 'none';
-}
-
-function showError(message) {
-    elements.errorAlert.style.display = 'block';
-    elements.errorMessage.textContent = message;
-}
-
-function hideError() {
-    elements.errorAlert.style.display = 'none';
-}
-
-// Fetch and Parse Functions
-async function fetchShrukContent(number) {
-    const response = await fetch(
-        `https://raw.githubusercontent.com/${config.owner}/${config.repo}/${config.branch}/shruks/text/shruk${number}.txt`
-    );
-    
-    if (!response.ok) {
-        throw new Error(`Failed to load Shruk ${number}`);
-    }
-    
-    return await response.text();
-}
-
-function parseShrukContent(content) {
-    const sections = {};
-    let currentSection = '';
-    const lines = content.split('\n');
-    
-    for (const line of lines) {
-        if (line.startsWith('[') && line.endsWith(']')) {
-            currentSection = line.slice(1, -1).toLowerCase();
-            sections[currentSection] = '';
-        } else if (currentSection) {
-            sections[currentSection] += (sections[currentSection] ? '\n' : '') + line;
+        // Helper Functions
+        function showLoading() {
+            elements.loadingOverlay.style.display = 'flex';
         }
-    }
-    
-    return sections;
-}
 
-// Audio Functions
-async function loadAudio(number) {
-    try {
-        const audioUrl = `https://raw.githubusercontent.com/${config.owner}/${config.repo}/${config.branch}/shruks/audio/Shruk_${number}_audio.wav`;
-        elements.audioPlayer.src = audioUrl;
-        await elements.audioPlayer.load();
-        return true;
-    } catch (error) {
-        console.error('Error loading audio:', error);
-        return false;
-    }
-}
-
-function toggleAudio(number) {
-    if (audioPlaying) {
-        elements.audioPlayer.pause();
-        audioPlaying = false;
-        document.querySelector(`.audio-btn[data-shruk="${number}"] i`)
-            .classList.replace('fa-pause', 'fa-play');
-    } else {
-        elements.audioPlayer.play();
-        audioPlaying = true;
-        document.querySelector(`.audio-btn[data-shruk="${number}"] i`)
-            .classList.replace('fa-play', 'fa-pause');
-    }
-}
-
-// UI Update Functions
-function updateNavigationButtons(number) {
-    elements.prevButton.disabled = number <= 1;
-    elements.nextButton.disabled = number >= 99;
-}
-
-function createShrukHTML(data, number) {
-    return `
-        <div class="row">
-            <div class="col-12">
-                <h2 class="text-center mb-4">Shruk ${number}</h2>
-            </div>
-            
-            <!-- Kashmiri Text -->
-            <div class="col-12 mb-4">
-                <div class="poetry-card">
-                    <div class="audio-control">
-                        <button class="audio-btn" data-shruk="${number}" onclick="toggleAudio(${number})">
-                            <i class="fas fa-play"></i>
-                        </button>
-                    </div>
-                    <div class="poetry-text kashmiri-text">
-                        ${data.kashmiri}
-                    </div>
-                </div>
-            </div>
-            
-            <!-- English Translation -->
-            <div class="col-12 mb-4">
-                <div class="poetry-card">
-                    <h4 class="mb-3">English</h4>
-                    <div class="poetry-text">
-                        ${data.english}
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Other Translations -->
-            <div class="col-md-4">
-                <div class="poetry-card">
-                    <h4 class="mb-3">French</h4>
-                    <div class="poetry-text">
-                        ${data.french}
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4">
-                <div class="poetry-card">
-                    <h4 class="mb-3">German</h4>
-                    <div class="poetry-text">
-                        ${data.german}
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4">
-                <div class="poetry-card">
-                    <h4 class="mb-3">Russian</h4>
-                    <div class="poetry-text">
-                        ${data.russian}
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Metadata -->
-            <div class="col-12 mt-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5>Category: ${data.metadata?.category || 'N/A'}</h5>
-                        <p class="mb-0">Tags: ${data.metadata?.tags || 'N/A'}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-}
-
-// Main Functions
-async function loadShruk(number) {
-    showLoading();
-    hideError();
-    
-    try {
-        const content = await fetchShrukContent(number);
-        const data = parseShrukContent(content);
-        
-        elements.shrukContainer.innerHTML = createShrukHTML(data, number);
-        currentShrukNumber = number;
-        updateNavigationButtons(number);
-        
-        // Load audio if available
-        const hasAudio = await loadAudio(number);
-        if (!hasAudio) {
-            document.querySelector(`.audio-btn[data-shruk="${number}"]`).style.display = 'none';
+        function hideLoading() {
+            elements.loadingOverlay.style.display = 'none';
         }
-        
-        // Update URL without reloading
-        const newUrl = `${window.location.pathname}?shruk=${number}`;
-        window.history.pushState({ shrukNumber: number }, '', newUrl);
-        
-    } catch (error) {
-        showError(error.message);
-    } finally {
-        hideLoading();
-    }
-}
 
-// Search Functions
-async function buildSearchIndex() {
-    showLoading();
-    
-    try {
-        searchableContent = [];
-        for (let i = 1; i <= 99; i++) {
+        function showError(message) {
+            elements.errorAlert.style.display = 'block';
+            elements.errorMessage.textContent = message;
+        }
+
+        function hideError() {
+            elements.errorAlert.style.display = 'none';
+        }
+
+        // Fetch and Parse Functions
+        async function fetchShrukContent(number) {
+            const response = await fetch(
+                `https://raw.githubusercontent.com/${config.owner}/${config.repo}/${config.branch}/shruks/text/shruk${number}.txt`
+            );
+            
+            if (!response.ok) {
+                throw new Error(`Failed to load Shruk ${number}`);
+            }
+            
+            return await response.text();
+        }
+
+        async function parseShrukContent(content) {
+            const data = {
+                metadata: {},
+                kashmiri: '',
+                english: '',
+                french: '',
+                german: '',
+                russian: ''
+            };
+
+            const lines = content.split('\n');
+            let currentSection = 'metadata';
+
+            for (let line of lines) {
+                line = line.trim();
+                if (!line) continue;
+
+                // Parse metadata lines
+                if (line.includes('=')) {
+                    const [key, value] = line.split('=').map(s => s.trim());
+                    data.metadata[key.toLowerCase()] = value;
+                    continue;
+                }
+
+                // Handle section headers
+                if (line.startsWith('[') && line.endsWith(']')) {
+                    currentSection = line.slice(1, -1).toLowerCase();
+                    continue;
+                }
+
+                // Add content to appropriate section
+                if (currentSection !== 'metadata') {
+                    data[currentSection] = data[currentSection] 
+                        ? data[currentSection] + '\n' + line 
+                        : line;
+                }
+            }
+
+            return data;
+        }
+
+        // Audio Functions
+        async function loadAudio(number) {
             try {
-                const content = await fetchShrukContent(i);
-                const data = parseShrukContent(content);
-                searchableContent.push({
-                    number: i,
-                    data: data
-                });
+                const audioUrl = `https://raw.githubusercontent.com/${config.owner}/${config.repo}/${config.branch}/shruks/audio/Shruk_${number}_audio.wav`;
+                elements.audioPlayer.src = audioUrl;
+                await elements.audioPlayer.load();
+                return true;
             } catch (error) {
-                console.warn(`Could not index Shruk ${i}:`, error);
+                console.error('Error loading audio:', error);
+                return false;
             }
         }
-    } catch (error) {
-        showError('Error building search index');
-    } finally {
-        hideLoading();
-    }
-}
 
-function searchShruks(query, language) {
-    if (!query) return [];
-    
-    query = query.toLowerCase();
-    return searchableContent.filter(item => {
-        const content = item.data[language]?.toLowerCase() || '';
-        return content.includes(query);
-    });
-}
+        function toggleAudio(number) {
+            if (audioPlaying) {
+                elements.audioPlayer.pause();
+                audioPlaying = false;
+                document.querySelector(`.audio-btn[data-shruk="${number}"] i`)
+                    .classList.replace('fa-pause', 'fa-play');
+            } else {
+                elements.audioPlayer.play();
+                audioPlaying = true;
+                document.querySelector(`.audio-btn[data-shruk="${number}"] i`)
+                    .classList.replace('fa-play', 'fa-pause');
+            }
+        }
 
-// Event Listeners
-document.addEventListener('DOMContentLoaded', () => {
-    // Get initial Shruk number from URL
-    const params = new URLSearchParams(window.location.search);
-    const initialShruk = parseInt(params.get('shruk')) || 1;
-    
-    // Load initial Shruk
-    loadShruk(initialShruk);
-    
-    // Build search index
-    buildSearchIndex();
-});
+        // UI Update Functions
+        function updateNavigationButtons(number) {
+            elements.prevButton.disabled = number <= 1;
+            elements.nextButton.disabled = number >= 99;
+        }
 
-// Navigation Events
-elements.prevButton.addEventListener('click', () => {
-    if (currentShrukNumber > 1) {
-        loadShruk(currentShrukNumber - 1);
-    }
-});
+        function createShrukHTML(data, number) {
+            return `
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="text-center mb-4">Shruk ${number}</h2>
+                    </div>
+                    
+                    <!-- Kashmiri Text -->
+                    <div class="col-12 mb-4">
+                        <div class="poetry-card">
+                            <div class="audio-control">
+                                <button class="audio-btn" data-shruk="${number}" onclick="toggleAudio(${number})">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                            </div>
+                            <div class="poetry-text kashmiri-text">
+                                <b>${data.kashmiri || 'No content available'}</b>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- English Translation -->
+                    <div class="col-12 mb-4">
+                        <div class="poetry-card">
+                            <h4 class="mb-3">English</h4>
+                            <div class="poetry-text">
+                                ${data.english || 'No content available'}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Other Translations -->
+                    <div class="col-md-4">
+                        <div class="poetry-card">
+                            <h4 class="mb-3">French</h4>
+                            <div class="poetry-text">
+                                ${data.french || 'No content available'}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="poetry-card">
+                            <h4 class="mb-3">German</h4>
+                            <div class="poetry-text">
+                                ${data.german || 'No content available'}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="poetry-card">
+                            <h4 class="mb-3">Russian</h4>
+                            <div class="poetry-text">
+                                ${data.russian || 'No content available'}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Metadata -->
+                    <div class="col-12 mt-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5>Category: ${data.metadata?.category || 'N/A'}</h5>
+                                <p class="mb-0">Tags: ${data.metadata?.tags || 'N/A'}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
 
-elements.nextButton.addEventListener('click', () => {
-    if (currentShrukNumber < 99) {
-        loadShruk(currentShrukNumber + 1);
-    }
-});
+        // Main load function
+        async function loadShruk(number) {
+            showLoading();
+            hideError();
+            
+            try {
+                const content = await fetchShrukContent(number);
+                const data = await parseShrukContent(content);
+                
+                elements.shrukContainer.innerHTML = createShrukHTML(data, number);
+                currentShrukNumber = number;
+                updateNavigationButtons(number);
+                
+                // Load audio if available
+                const hasAudio = await loadAudio(number);
+                if (!hasAudio) {
+                    document.querySelector(`.audio-btn[data-shruk="${number}"]`).style.display = 'none';
+                }
+                
+                // Update URL without reloading
+                const newUrl = `${window.location.pathname}?shruk=${number}`;
+                window.history.pushState({ shrukNumber: number }, '', newUrl);
+                
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                hideLoading();
+            }
+        }
 
-// Search Form Events
-elements.numberSearchForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const number = parseInt(document.getElementById('shrukNumber').value);
-    if (number >= 1 && number <= 99) {
-        loadShruk(number);
-    }
-});
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get initial Shruk number from URL
+            const params = new URLSearchParams(window.location.search);
+            const initialShruk = parseInt(params.get('shruk')) || 1;
+            
+            // Load initial Shruk
+            loadShruk(initialShruk);
+        });
 
-elements.textSearchForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const query = document.getElementById('searchText').value;
-    const language = document.getElementById('searchLanguage').value;
-    
-    searchResults = searchShruks(query, language);
-    if (searchResults.length > 0) {
-        searchIndex = 0;
-        loadShruk(searchResults[0].number);
-    } else {
-        showError('No matching Shruks found');
-    }
-});
+        // Navigation Events
+        elements.prevButton.addEventListener('click', () => {
+            if (currentShrukNumber > 1) {
+                loadShruk(currentShrukNumber - 1);
+            }
+        });
 
-elements.categorySearchForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const category = document.getElementById('categorySelect').value;
-    
-    const results = searchableContent.filter(item => 
-        item.data.metadata?.category?.toLowerCase() === category.toLowerCase()
-    );
-    
-    if (results.length > 0) {
-        searchResults = results;
-        searchIndex = 0;
-        loadShruk(results[0].number);
-    } else {
-        showError('No Shruks found in this category');
-    }
-});
+        elements.nextButton.addEventListener('click', () => {
+            if (currentShrukNumber < 99) {
+                loadShruk(currentShrukNumber + 1);
+            }
+        });
 
-// Audio Events
-elements.audioPlayer.addEventListener('ended', () => {
-    audioPlaying = false;
-    document.querySelector(`.audio-btn[data-shruk="${currentShrukNumber}"] i`)
-        .classList.replace('fa-pause', 'fa-play');
-});
+        // Search Form Events
+        elements.numberSearchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const number = parseInt(document.getElementById('shrukNumber').value);
+            if (number >= 1 && number <= 99) {
+                loadShruk(number);
+            }
+        });
+    </script>
 
-// Handle browser back/forward buttons
-window.addEventListener('popstate', (event) => {
-    if (event.state?.shrukNumber) {
-        loadShruk(event.state.shrukNumber);
-    }
-});
-</script>
-
-
-
-    
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
-
-
