@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Shrukh</title>
+    <meta name="keywords" content="Dr Mansoor" />
+    <meta name="description" content="Dr Mansoor" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/13.0.1/markdown-it.min.js"></script>
+    <style>
+        /* Previous CSS styles remain the same */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading i {
+            color: #1a237e;
+            font-size: 24px;
+        }
+
+        .error-message {
+            color: #d32f2f;
+            text-align: center;
+            padding: 10px;
+            display: none;
+        }
+
+        /* Add styles for navigation buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .nav-button {
+            padding: 10px 20px;
+            background: #1a237e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: #311b92;
+        }
+
+        .nav-button:disabled {
+            background: #9e9e9e;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+<div id="templatemo_container">
+    <!-- Header remains the same -->
+    <div id="templatemo_site_title_bar">
+        <div id="site_title">
+            <h1>
+                <a href="index.html">
+                    <i class="fas fa-book-open"></i> SHAIKH-UL-AALAM R.A.
+                </a>
+            </h1>
+        </div>
+    </div>
+
+    <div id="templatemo_menu">
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#" id="refreshButton"><i class="fas fa-sync"></i> Refresh</a></li>
+        </ul>
+    </div>
+
+    <div id="templatemo_content">
+        <div class="section_w670">
+            <div class="search-container">
+                <h2 style="text-align: center; margin-bottom: 20px; color: #1a237e;">
+                    <i class="fas fa-search"></i> Search Shruk
+                </h2>
+                <form id="searchForm">
+                    <label for="searchTerm">Shruk Number:</label>
+                    <input type="text" id="searchTerm" name="searchTerm" placeholder="Enter number (1-99)">
+                    <input type="submit" value="Search">
+                    <label style="color: #d32f2f; font-size: 0.9em;">
+                        <i class="fas fa-info-circle"></i> Please enter numbers from 1 to 99 only
+                    </label>
+                </form>
+            </div>
+
+            <div class="nav-buttons">
+                <button id="prevButton" class="nav-button" disabled>
+                    <i class="fas fa-chevron-left"></i> Previous
+                </button>
+                <button id="nextButton" class="nav-button">
+                    Next <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <div class="loading">
+                <i class="fas fa-spinner fa-spin"></i> Loading...
+            </div>
+
+            <div class="error-message"></div>
+
+            <div class="poetry-container">
+                <table id="shrukContent">
+                    <!-- Content will be loaded dynamically -->
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer remains the same -->
+    <div id="templatemo_footer">
+        <ul class="footer_menu">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="index.html"><i class="fas fa-envelope"></i> Contact</a></li> 
+        </ul>
+        Copyright © 2024 <a href="index.html">Shaikh-Ul-Aalam R.A.</a>
+    </div>
+</div>
+
+<script>
+// Configuration
+const config = {
+    owner: 'YOUR_GITHUB_USERNAME',
+    repo: 'YOUR_REPO_NAME',
+    branch: 'main',
+    baseUrl: 'https://api.github.com/repos'
+};
+
+let currentShrukNumber = 1;
+
+// Function to fetch Shruk content from GitHub
+async function fetchShruk(number) {
+    const loading = document.querySelector('.loading');
+    const errorMsg = document.querySelector('.error-message');
+    loading.style.display = 'block';
+    errorMsg.style.display = 'none';
+
+    try {
+        const response = await fetch(`${config.baseUrl}/${config.owner}/${config.repo}/contents/shruks/shruk${number}.txt?ref=${config.branch}`);
+        
+        if (!response.ok) {
+            throw new Error(`Shruk ${number} not found`);
+        }
+
+        const data = await response.json();
+        const content = atob(data.content);
+        const shrukData = parseShrukContent(content);
+        
+        updateUI(shrukData, number);
+        updateNavigationButtons(number);
+    } catch (error) {
+        errorMsg.textContent = error.message;
+        errorMsg.style.display = 'block';
+    } finally {
+        loading.style.display = 'none';
+    }
+}
+
+// Function to parse Shruk content
+function parseShrukContent(content) {
+    const lines = content.split('\n');
+    return {
+        number: currentShrukNumber,
+        kashmiri: lines[0] || '',
+        english: lines[1] || '',
+        french: lines[2] || '',
+        german: lines[3] || '',
+        russian: lines[4] || ''
+    };
+}
+
+// Function to update UI with Shruk content
+function updateUI(shrukData, number) {
+    const table = document.getElementById('shrukContent');
+    table.innerHTML = `
+        <tr>
+            <th>Shrukh</th>
+            <th>Kashmiri</th>
+            <th>English</th>
+        </tr>
+        <tr>
+            <td style="text-align: center; font-size: 1.5em; color: #1a237e;">${number}</td>
+            <td>
+                <div class="poetry-text kashmiri-text">
+                    <b>${shrukData.kashmiri}</b>
+                </div>
+            </td>
+            <td>
+                <div class="poetry-text">
+                    ${shrukData.english}
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>French</th>
+            <th>German</th>
+            <th>Russian</th>
+        </tr>
+        <tr>
+            <td>
+                <div class="poetry-text">
+                    ${shrukData.french}
+                </div>
+            </td>
+            <td>
+                <div class="poetry-text">
+                    ${shrukData.german}
+                </div>
+            </td>
+            <td>
+                <div class="poetry-text">
+                    ${shrukData.russian}
+                </div>
+            </td>
+        </tr>
+    `;
+}
+
+// Function to update navigation buttons
+function updateNavigationButtons(number) {
+    const prevButton = document.getElementById('prevButton');
+    const nextButton = document.getElementById('nextButton');
+    
+    prevButton.disabled = number <= 1;
+    nextButton.disabled = number >= 99;
+}
+
+// Event Listeners
+document.getElementById('searchForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const searchTerm = document.getElementById('searchTerm').value;
+    const number = parseInt(searchTerm);
+    
+    if (number >= 1 && number <= 99) {
+        currentShrukNumber = number;
+        fetchShruk(number);
+    }
+});
+
+document.getElementById('prevButton').addEventListener('click', () => {
+    if (currentShrukNumber > 1) {
+        currentShrukNumber--;
+        fetchShruk(currentShrukNumber);
+    }
+});
+
+document.getElementById('nextButton').addEventListener('click', () => {
+    if (currentShrukNumber < 99) {
+        currentShrukNumber++;
+        fetchShruk(currentShrukNumber);
+    }
+});
+
+document.getElementById('refreshButton').addEventListener('click', (e) => {
+    e.preventDefault();
+    fetchShruk(currentShrukNumber);
+});
+
+// Initial load
+fetchShruk(currentShrukNumber);
+</script>
+</body>
+</html>
