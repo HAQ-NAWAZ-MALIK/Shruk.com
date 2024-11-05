@@ -1,0 +1,29 @@
+SHRUK_NUMBER=1
+AUDIO_FILE=Shruk_1_audio.wav
+CATEGORY=Divine Love
+TAGS=soul, divine, meaning, virtuous
+[KASHMIRI]
+پوشہِ متٮ۪ن یِمن ابدالن
+خۄش کٔلمَن بوٗزِکھ معنے
+گوش روٚٹُکھ پٮ۪ٹھ سنگاسن
+یِمن لعلن مۄل کُس زانے
+[ENGLISH]
+Those beautiful virtuous souls
+Sought the meanings of the verses divine!
+They found their place on the thrones.
+Who can know their proper worth.
+[FRENCH]
+Ces belles ȃmes vertueuses
+Cherchaient le sens des vers divins!
+Ils trouverent leur place sur les trȏnes.
+Qui peut connaitre leur juste valeur?
+[GERMAN]
+Diese schönen tugendhaften Seelen
+Suchten nach der Bedeutung der göttlichen Verse!
+Sie fanden ihren Platz auf den Thronen.
+Wer kann ihren wahren Wert kennen?
+[RUSSIAN]
+Эти прекрасные добродетельные души
+Искали смысл божественных стихов!
+Нашли своё место на престолах.
+Кто может знать их цену?
