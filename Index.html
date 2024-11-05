@@ -10,6 +10,8 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Custom CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" rel="stylesheet">
     <style>
         :root {
             --primary-color: #1a237e;
@@ -18,11 +20,22 @@
             --light-bg: #f8f9fa;
             --border-color: #dee2e6;
             --sidebar-bg: rgba(255, 255, 255, 0.7);
+            --dark-bg: #121212;
+            --dark-text: #e0e0e0;
+            --dark-accent: #bb86fc;
+            --light-accent: #03dac6;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--light-bg);
+            color: var(--text-color);
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
         }
 
         /* Header Styles */
@@ -55,7 +68,7 @@
             transform: translateX(-100%);
         }
 
-        .sidebar.open {
+        body.sidebar-open .sidebar {
             transform: translateX(0);
         }
 
@@ -82,6 +95,29 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
         }
 
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1100;
+            background: var(--primary-color);
+            border: none;
+            color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+
         .sidebar .shruk-list {
             list-style: none;
             padding: 0;
@@ -99,6 +135,14 @@
             background: var(--light-bg);
         }
 
+        body.dark-mode .sidebar {
+            background: rgba(50, 50, 50, 0.7);
+        }
+
+        body.dark-mode .sidebar .shruk-list-item:hover {
+            background: var(--dark-bg);
+        }
+
         .sidebar .total-shruks {
             margin-top: 1rem;
             font-weight: bold;
@@ -113,6 +157,11 @@
             margin-bottom: 2rem;
         }
 
+        body.dark-mode .search-panel {
+            background: #222;
+            color: var(--dark-text);
+        }
+
         .nav-tabs .nav-link {
             color: var(--text-color);
             border: none;
@@ -123,6 +172,15 @@
             color: var(--primary-color);
             border-bottom: 3px solid var(--primary-color);
             font-weight: 500;
+        }
+
+        body.dark-mode .nav-tabs .nav-link {
+            color: var(--dark-text);
+        }
+
+        body.dark-mode .nav-tabs .nav-link.active {
+            color: var(--dark-accent);
+            border-bottom-color: var(--dark-accent);
         }
 
         .tab-content {
@@ -140,8 +198,9 @@
             transition: margin-left 0.3s ease;
         }
 
-        .shruk-container.sidebar-open {
-            margin-left: 270px;
+        body.dark-mode .shruk-container {
+            background: #222;
+            color: var(--dark-text);
         }
 
         .poetry-card {
@@ -150,6 +209,11 @@
             border-radius: 0.5rem;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
+            transition: background 0.5s;
+        }
+
+        body.dark-mode .poetry-card {
+            background: #333;
         }
 
         .poetry-text {
@@ -168,6 +232,10 @@
             font-size: 4rem;
             color: var(--primary-color);
             opacity: 0.1;
+        }
+
+        body.dark-mode .poetry-text::before {
+            color: var(--dark-accent);
         }
 
         .kashmiri-text {
@@ -203,8 +271,16 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
         }
 
+        body.dark-mode .audio-btn {
+            background: #444;
+        }
+
         .audio-btn i {
             color: var(--primary-color);
+        }
+
+        body.dark-mode .audio-btn i {
+            color: var(--dark-accent);
         }
 
         /* Navigation Controls */
@@ -247,14 +323,27 @@
             z-index: 1000;
         }
 
+        body.dark-mode .loading-overlay {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
         .loading-spinner {
             color: var(--primary-color);
+        }
+
+        body.dark-mode .loading-spinner {
+            color: var(--dark-accent);
         }
 
         /* Error Messages */
         .error-alert {
             display: none;
             margin: 1rem 0;
+        }
+
+        body.dark-mode .error-alert {
+            background: #333;
+            color: var(--dark-text);
         }
 
         /* Responsive Adjustments */
@@ -277,7 +366,46 @@
             }
 
             .shruk-container {
-                margin-left: 210px;
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .bottom-sheet {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: var(--sidebar-bg);
+                backdrop-filter: blur(10px);
+                border-radius: 1rem 1rem 0 0;
+                max-height: 60%;
+                overflow-y: auto;
+                box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+                transform: translateY(100%);
+                transition: transform 0.3s ease;
+                z-index: 1000;
+            }
+
+            .bottom-sheet.open {
+                transform: translateY(0);
+            }
+
+            .bottom-sheet-toggle {
+                position: fixed;
+                bottom: 1rem;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--primary-color);
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                z-index: 1100;
             }
         }
     </style>
@@ -286,6 +414,11 @@
     <!-- Sidebar Toggle Button -->
     <button class="sidebar-toggle" onclick="toggleSidebar()">
         <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-adjust"></i>
     </button>
 
     <!-- Sidebar -->
@@ -444,7 +577,8 @@
             categorySearchForm: document.getElementById('categorySearchForm'),
             sidebar: document.getElementById('sidebar'),
             shrukList: document.getElementById('shrukList'),
-            totalShruks: document.getElementById('totalShruks')
+            totalShruks: document.getElementById('totalShruks'),
+            themeToggle: document.querySelector('.theme-toggle')
         };
 
         // Helper Functions
@@ -466,7 +600,19 @@
         }
 
         function toggleSidebar() {
-            elements.sidebar.classList.toggle('open');
+            document.body.classList.toggle('sidebar-open');
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
         }
 
         // Fetch and Parse Functions
@@ -615,6 +761,9 @@
                         </div>
                     </div>
                     
+                    <!-- Metadata -->
+                   
+
                     <!-- Metadata -->
                     <div class="col-12 mt-4">
                         <div class="card">
