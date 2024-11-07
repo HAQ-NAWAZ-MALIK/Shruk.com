@@ -1,0 +1,15 @@
+{
+    "shruks": [
+        {
+            "shruk_number": 1,
+            "audio_file": "Shruk_1_audio.wav",
+            "category": "Divine Love",
+            "tags": ["soul", "divine", "meaning", "virtuous"],
+            "kashmiri": "پوشہِ متٮ۪ن یِمن ابدالن\nخۄش کٔلمَن بوٗزِکھ معنے\nگوش روٚٹُکھ پٮ۪ٹھ سنگاسن\nیِمن لعلن مۄل کُس زانے",
+            "english": "Those beautiful virtuous souls\nSought the meanings of the verses divine!\nThey found their place on the thrones.\nWho can know their proper worth.",
+            "french": "Ces belles ȃmes vertueuses\nCherchaient le sens des vers divins!\nIls trouverent leur place sur les trȏnes.\nQui peut connaitre leur juste valeur?",
+            "german": "Diese schönen tugendhaften Seelen\nSuchten nach der Bedeutung der göttlichen Verse!\nSie fanden ihren Platz auf den Thronen.\nWer kann ihren wahren Wert kennen?",
+            "russian": "Эти прекрасные добродетельные души\nИскали смысл божественных стихов!\nНашли своё место на престолах.\nКто может знать их цену?"
+        }
+    ]
+}
